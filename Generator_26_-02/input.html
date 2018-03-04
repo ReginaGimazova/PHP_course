@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Form</title>
 </head>
 <body>
-    <form action="generate.php" method="post">
-        <input type="text" name="input" id="input" style="margin-bottom: 10px">
-        <br>
-        <button type="submit">Кнопка</button>
-    </form>
+
+<?php if (isset($_REQUEST['go'])):?>
+<?php else:?>
+<form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
+    <input id="input" name="input"></input><br>
+    <input type="submit" name="go" value="Отправить"><br>
+</form>
+<?php endif?>
+
 </body>
 </html>

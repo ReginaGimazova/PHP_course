@@ -8,7 +8,7 @@
  * @return string
  */
 
-$input = $_POST["input"];
+require 'input.html';
 
 function change_str($str){
 
@@ -59,4 +59,10 @@ function change_str($str){
     return $change_Str;
 }
 
-echo change_str($input);
+$str = "";
+
+if (isset($_POST['input'])){
+    $str = $_POST['input'];
+}
+
+echo change_str($str);
