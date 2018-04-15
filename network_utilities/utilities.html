@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<?php if (isset($_REQUEST['go'])):?>
+<?php else:?>
+    <form action="<?=$_SERVER['REQUEST_URI']?>" method="post">
+        <textarea name="address" cols="50" rows="3" placeholder="Введите адрес сайта" style="margin-left: 50px"></textarea>
+        <p><input type="radio" name="utility" value="ping" style="margin-left: 50px">ping</p>
+        <p><input type="radio" name="utility" value="tracert" style="margin-left: 50px">tracert</p>
+        <button type="submit" name="go" style="margin-left: 50px">Отправить</button>
+    </form>
+<?php endif?>
+</body>
+</html>
