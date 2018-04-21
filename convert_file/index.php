@@ -1,32 +1,33 @@
 <?php
 
-    function getRuleSymbols($string){
-        return substr($string, 0, 3);
+    function getRuleSymbols($string, $length){
+        return substr($string, 0, $length);
     }
 
     function parseFile($iniFile){
-        $iniArray = parse_ini_file($iniFile);
+        $iniArray = parse_ini_file($iniFile, true);
         return $iniArray;
     }
 
-    function getFileName($iniArray){
-        $filename = $iniArray["filename"];
-        return $filename;
-    }
-
     function getOptions($iniArray){
-        $optionsArray = [];
+        $options = [];
         foreach ($iniArray as $key => $value){
-            if ($key !== "filename" & $key !== "symbol"){
-                $optionsArray[$key] = $value;
+            foreach ($value as $param_key => $param){
+                if ($param_key == 'filename'){
+                    $options[$param_key] = $value[$param_key];
+                }
+                else{
+                    $rule_key = reset($value);
+                    $options[$rule_key] = end($value);
+                }
             }
         }
-        return $optionsArray;
+        return $options;
     }
 
-    function getTypesOfConvert($value, $string)
+    function getTypesOfConvert($value, $string, $key)
     {
-        $string = substr($string, 3);
+        $string = substr($string, strlen($key));
 
         switch ($value) {
             case "+":
@@ -68,26 +69,22 @@
         }
     }
 
-    function convertString($string){
-        $rule = getRuleSymbols($string);
-        $optionsArray = getOptions(parseFile("index.ini"));
-        switch ($rule){
-            case "1st":
-                return getTypesOfConvert($optionsArray["upper"], $string);
-            case "2nd":
-                return getTypesOfConvert($optionsArray["direction"], $string);
-            case "3rd":
-                return getTypesOfConvert($optionsArray["delete"], $string);
-            default:
-                return $string;
+    function convertString($string, $options_array){
+
+        foreach ($options_array as $key => $value){
+            if (substr($string, 0, strlen($key)) == $key){
+                return getTypesOfConvert($value, $string, $key);
+            }
         }
+        return $string;
     }
 
     function convertFile(){
-        $file = getFileName(parseFile("index.ini"));
-        $strings = file($file);
+        $options_array = getOptions(parseFile("index.ini"));
+        $strings = file($options_array["filename"]);
         foreach ($strings as $string) {
-           echo convertString($string);
+           echo convertString($string, $options_array);
         }
     }
     convertFile();
+
