@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <form action="/proxy_wrapper.php" method="POST">
+            <label for="password"></label>
+            <textarea name="password" id="password" cols="40" rows="5">
+                <?php
+                if (isset($_SESSION["session"]))
+                    echo $_SESSION["session"];
+                ?>
+            </textarea>
+            <p><input type="submit" value="go"></p>
+        </form>
+    </body>
+</html>
